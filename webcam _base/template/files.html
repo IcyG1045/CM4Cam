@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Files</title>
+    <script>
+        function fetchFiles() {
+    fetch('/api/files')
+    .then(response => response.json())
+    .then(data => {
+        const imagesContainer = document.getElementById('images');
+        const videosContainer = document.getElementById('videos');
+
+        imagesContainer.innerHTML = '';  // Clear existing content
+        data.images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `{{ url_for('static', filename='pictures/thumbnails/') }}${image}`;
+            imgElement.alt = image;
+            imgElement.width = 100;
+            imagesContainer.appendChild(imgElement);
+        });
+
+        videosContainer.innerHTML = '';  // Clear existing content
+        data.videos.forEach(video => {
+            const videoElement = document.createElement('video');
+            videoElement.width = 320;
+            videoElement.height = 240;
+            videoElement.controls = true;
+            const sourceElement = document.createElement('source');
+            sourceElement.src = `{{ url_for('static', filename='video/') }}${video}`;
+            sourceElement.type = 'video/mp4';
+            videoElement.appendChild(sourceElement);
+            videosContainer.appendChild(videoElement);
+        });
+    })
+    .catch(error => console.error('Error loading files:', error));
+}
+
+
+        // Execute fetchFiles only once when the document is loaded
+        document.addEventListener('DOMContentLoaded', fetchFiles);
+    </script>
+</head>
+<body>
+    <h1>Pictures</h1>
+    <div id="images"></div>
+
+    <h1>Videos</h1>
+    <div id="videos"></div>
+</body>
+</html>
