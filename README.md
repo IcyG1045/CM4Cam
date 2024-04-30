@@ -11,6 +11,8 @@ This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wi
 https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085
 
 3d printed cased model
+
+
 ![cm4-nano-c 3d printed case](https://github.com/IcyG1045/CM4Cam/assets/80078028/2f286fb9-f90a-4288-b19e-964b7c149619)
 
 
