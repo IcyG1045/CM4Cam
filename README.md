@@ -8,6 +8,7 @@ This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wi
 
 
 3d printed case link and creator Metatron22
+
 https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085
 
 
