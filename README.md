@@ -12,7 +12,6 @@ CM4-Nano-C with CM4
 ![cm4-nano-c-1](https://github.com/IcyG1045/CM4Cam/assets/80078028/37a424ed-3348-4006-8b17-8be5d7d7ff7e)
 
 Mobile Phone View
-![IMG_6899](https://github.com/IcyG1045/CM4Cam/assets/80078028/3d26e7ad-bc80-4b8b-8902-4473bff1ce61)
 ![IMG_68999](https://github.com/IcyG1045/CM4Cam/assets/80078028/2d8e3a98-73a8-4a19-933d-a2d2c3a3271e)
 
 
