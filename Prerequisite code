@@ -19,7 +19,11 @@ From there, scroll down to the bottom where it says [all] and add the following,
 
 dtoverlay=imx219,cam0
 
-Your camera should now work using
+press controll+x then press Y then press enter. 
+
+sudo reboot
+
+Upon rebooting Your camera should now work using
 
 libcamerahello -t 0
 
