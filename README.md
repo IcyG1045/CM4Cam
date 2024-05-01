@@ -9,6 +9,8 @@ This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wi
 
 3d printed case link and creator Metatron22
 
+For the case, I had to cut off the bit that sticks out on the bottom half because it interfered with the wireless antennae. I also had to use screws to screw the two halves together because my pla print did not clip well.
+
 https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085
 
 
