@@ -124,14 +124,12 @@ def home_func():
 
 
 @app.route('/info.html')
-
 def info():
-
     """Info Pane"""
-
-
-
+    if 'username' not in session:
+        return redirect(url_for('login'))  # Redirect to login if not authenticated
     return render_template('info.html')
+
 
 
 
@@ -293,7 +291,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))  # Redirect to index which will force login due to session check
 
 @app.before_request
 def require_login():
