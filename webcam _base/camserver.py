@@ -25,6 +25,50 @@ api = Api(app)
 encoder = H264Encoder()
 output = CircularOutput()
 
+import subprocess
+
+# Global or session variable to hold the current recording file name
+current_video_file = None
+
+def convert_h264_to_mp4(source_file_path, output_file_path):
+    try:
+        # Command to convert h264 to mp4
+        command = ['ffmpeg', '-i', source_file_path, '-c', 'copy', output_file_path]
+        subprocess.run(command, check=True)
+        print(f"Conversion successful: {output_file_path}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during conversion: {e}")
+
+def show_time():
+    """Return current time formatted for file names."""
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+@app.route('/startRec.html')
+def startRec():
+    """Start Recording Pane"""
+    global current_video_file
+    print("Video Record")
+    basename = show_time()
+    parent_dir = "/home/cm4/cam/static/video/"
+    current_video_file = f"vid_{basename}.h264"  # Save the full path to a global variable
+    output.fileoutput = os.path.join(parent_dir, current_video_file)
+    output.start()
+    return render_template('startRec.html')
+
+@app.route('/stopRec.html')
+def stopRec():
+    """Stop Recording Pane"""
+    global current_video_file
+    print("Video Stop")
+    output.stop()
+    if current_video_file:
+        source_path = os.path.join('/home/cm4/cam/static/video/', current_video_file)
+        output_path = source_path.replace('.h264', '.mp4')
+        convert_h264_to_mp4(source_path, output_path)
+        return render_template('stopRec.html', message=f"Conversion successful for {output_path}")
+    else:
+        return render_template('stopRec.html', message="No video was recorded or file path is missing.")
+
 class Camera:
     def __init__(self):
         self.camera = picamera2.Picamera2()
@@ -79,25 +123,6 @@ class VideoFeed(Resource):
             return redirect(url_for('login'))  # Ensure this follows your app's login logic
         return Response(genFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# Timestamp
-
-def show_time():
-
-    ''' Show current date time in text format '''
-
-    rightNow = datetime.now()
-
-    print(rightNow)
-
-    currentTime = rightNow.strftime("%d-%m-%Y")
-
-    print("date and time =", currentTime)
-
-
-
-    return currentTime
-
-
 
 @app.route('/')
 
@@ -129,48 +154,6 @@ def info():
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not authenticated
     return render_template('info.html')
-
-
-
-
-@app.route('/startRec.html')
-
-def startRec():
-
-    """Start Recording Pane"""
-
-    print("Video Record")
-
-    basename = show_time()
-
-    directory = basename
-
-    parent_dir = "/home/cm4/cam/static/video/"
-
-    output.fileoutput = (parent_dir + "vid_%s.h264"  %directory)
-
-    output.start()
-
-
-
-    return render_template('startRec.html')
-
-
-
-@app.route('/stopRec.html')
-
-def stopRec():
-
-    """Stop Recording Pane"""
-
-    print("Video Stop")
-
-    output.stop()
-
-
-
-    return render_template('stopRec.html')
-
 
 
 @app.route('/srecord.html')
@@ -253,7 +236,7 @@ def files():
 
         images = os.listdir(image_directory)
 
-        videos = [file for file in os.listdir(video_directory) if file.endswith(('.mp4', '.mkv'))]  # Assuming video formats
+        videos = [file for file in os.listdir(video_directory) if file.endswith(('.mp4'))]  # Assuming video formats
 
 
 
@@ -300,8 +283,6 @@ def require_login():
         return redirect(url_for('login'))
 
 
-# Your existing Flask routes and API definitions...
-
 
 def create_image_thumbnail(image_path, thumbnail_path, size=(128, 128)):
 
@@ -320,6 +301,7 @@ def create_image_thumbnail(image_path, thumbnail_path, size=(128, 128)):
         print(f"Error creating thumbnail for {image_path}: {e}")
 
 
+
 class ThumbnailHandler(FileSystemEventHandler):
 
     def on_created(self, event):
@@ -335,10 +317,10 @@ class ThumbnailHandler(FileSystemEventHandler):
             create_image_thumbnail(event.src_path, thumbnail_path)
 
 
-
-IMAGE_DIRECTORY = '/home/cm4/cam/static/pictures'
+IMAGE_DIRECTORY = '/home/cm4/cam/static/pictures/'
 
 THUMBNAIL_DIRECTORY = os.path.join(IMAGE_DIRECTORY, 'thumbnails')
+
 
 
 def debug_directory_contents(directory):
@@ -354,19 +336,12 @@ def debug_directory_contents(directory):
             print(f"File: {entry.name}, Size: {entry.stat().st_size} bytes")
 
 
-
-# Call this function in your api_files route or where you list the directory contents
-
 debug_directory_contents(THUMBNAIL_DIRECTORY)
-
 
 # Ensure the thumbnail directory exists
 
 os.makedirs(THUMBNAIL_DIRECTORY, exist_ok=True)
 
-
-
-# Optionally add video processing similar to image processing if needed
 
 # Setup the watchdog observer
 
@@ -376,8 +351,6 @@ observer.schedule(ThumbnailHandler(), IMAGE_DIRECTORY, recursive=False)
 
 observer.start()
 
-
-
 # Ensure that the observer is stopped when the app exits
 
 atexit.register(observer.stop)
@@ -385,3 +358,4 @@ atexit.register(observer.stop)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000)
+
