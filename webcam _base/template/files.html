@@ -3,37 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <title>Files</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .content-container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        img, video {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            margin-right: 15px;
+            display: inline-block;
+            cursor: pointer; /* Indicates clickable items */
+        }
+        img:last-child, video:last-child {
+            margin-right: 0;
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #333;
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); /* Shadow effects */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .download-link {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #4CAF50; /* Green color for the download link */
+        }
+    </style>
     <script>
         function fetchFiles() {
-    fetch('/api/files')
-    .then(response => response.json())
-    .then(data => {
-        const imagesContainer = document.getElementById('images');
-        const videosContainer = document.getElementById('videos');
+            fetch('/api/files')
+            .then(response => response.json())
+            .then(data => {
+                const imagesContainer = document.getElementById('images');
+                const videosContainer = document.getElementById('videos');
 
-        imagesContainer.innerHTML = '';  // Clear existing content
-        data.images.forEach(image => {
-            const imgElement = document.createElement('img');
-            imgElement.src = `{{ url_for('static', filename='pictures/thumbnails/') }}${image}`;
-            imgElement.alt = image;
-            imgElement.width = 100;
-            imagesContainer.appendChild(imgElement);
-        });
+                imagesContainer.innerHTML = '';  // Clear existing content
+                data.images.forEach(image => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = `/static/pictures/thumbnails/${image}`;
+                    imgElement.alt = image;
+                    imgElement.style.width = '100px';
+                    imgElement.onclick = () => showModal(`/static/pictures/${image}`, 'image', image);
+                    imagesContainer.appendChild(imgElement);
+                });
 
-        videosContainer.innerHTML = '';  // Clear existing content
-        data.videos.forEach(video => {
-            const videoElement = document.createElement('video');
-            videoElement.width = 320;
-            videoElement.height = 240;
-            videoElement.controls = true;
-            const sourceElement = document.createElement('source');
-            sourceElement.src = `{{ url_for('static', filename='video/') }}${video}`;
-            sourceElement.type = 'video/mp4';
-            videoElement.appendChild(sourceElement);
-            videosContainer.appendChild(videoElement);
-        });
-    })
-    .catch(error => console.error('Error loading files:', error));
+                videosContainer.innerHTML = '';  // Clear existing content
+                data.videos.forEach(video => {
+                    const videoElement = document.createElement('video');
+                    videoElement.style.width = '320px';
+                    videoElement.style.height = '240px';
+                    videoElement.controls = true;
+                    const sourceElement = document.createElement('source');
+                    // Assume the server provides .mp4 files.
+                    const videoFile = video.replace('.h264', '.mkv', '.mp4');
+                    sourceElement.src = `/static/video/${videoFile}`;
+                    sourceElement.type = 'video/mp4';  // MIME type for mp4
+                    videoElement.appendChild(sourceElement);
+                    videoElement.onclick = () => showModal(`/static/video/${videoFile}`, 'video', videoFile);
+                    videosContainer.appendChild(videoElement);
+                });
+            })
+            .catch(error => console.error('Error loading files:', error));
+        }
+
+        function showModal(fileUrl, type, fileName) {
+            const modal = document.getElementById('myModal');
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = ''; // Clear previous content
+
+            const downloadLink = document.createElement('a');
+            const datePart = fileName.match(/(\d{4}-\d{2}-\d{2})/)[0]; // Extract date from filename
+            downloadLink.href = fileUrl;
+            downloadLink.download = datePart; // Use the date as the download filename
+            downloadLink.textContent = 'Download File';
+            downloadLink.className = 'download-link';
+
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = fileUrl;
+                img.style.width = '100%';
+                modalContent.appendChild(img);
+            } else if (type === 'video') {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.style.width = '100%';
+                const source = document.createElement('source');
+                source.src = fileUrl;
+                source.type = 'video/x-matroska';
+                video.appendChild(source);
+                modalContent.appendChild(video);
+            }
+            modalContent.appendChild(downloadLink); // Append download link below the content
+
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = "none";
+        }function showModal(fileUrl, type, fileName) {
+    const modal = document.getElementById('myModal');
+    const modalContent = document.getElementById('modal-content');
+    modalContent.innerHTML = ''; // Clear previous content
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = fileUrl;
+    downloadLink.download = fileName; // Use the complete filename for download
+    downloadLink.textContent = 'Download File';
+    downloadLink.className = 'download-link';
+
+    if (type === 'image') {
+        const img = document.createElement('img');
+        img.src = fileUrl;
+        img.style.width = '100%';
+        modalContent.appendChild(img);
+    } else if (type === 'video') {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.style.width = '100%';
+        video.autoplay = true; // Autoplay when the modal opens
+        const source = document.createElement('source');
+        source.src = fileUrl;
+        source.type = 'video/mp4'; // MIME type for mp4
+        video.appendChild(source);
+        modalContent.appendChild(video);
+    }
+    modalContent.appendChild(downloadLink); // Append download link below the content
+
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+function closeModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = "none";
+    modal.querySelector('video')?.pause(); // Ensure video stops playing when modal is closed
 }
 
 
@@ -42,10 +189,33 @@
     </script>
 </head>
 <body>
-    <h1>Pictures</h1>
-    <div id="images"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Home Button -->
+                <a href="/home/cm4/cam/template/index.html" class="btn btn-primary" style="margin-bottom: 20px;">Home</a>
 
-    <h1>Videos</h1>
-    <div id="videos"></div>
+                <div class="content-container">
+                    <h1>Pictures</h1>
+                    <div id="images"></div>
+                </div>
+                <div class="content-container">
+                    <h1>Videos</h1>
+                    <div id="videos"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
