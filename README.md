@@ -24,22 +24,22 @@ For the case, I had to cut off the bit that sticks out on the bottom half becaus
 
 ## Pictures
 
-3d printed cased model
+### 3d printed cased model
 
 
 ![cm4-nano-c 3d printed case](https://github.com/IcyG1045/CM4Cam/assets/80078028/2f286fb9-f90a-4288-b19e-964b7c149619)
 
 
-CM4-Nano-C with CM4
+### CM4-Nano-C with CM4
 ![cm4-nano-c](https://github.com/IcyG1045/CM4Cam/assets/80078028/87a9ac50-ae94-44de-bf3c-9b01b1564456)
 
 
-Mobile Phone View
+### Mobile Phone View
 
 
 ![IMG_68999](https://github.com/IcyG1045/CM4Cam/assets/80078028/89bb749c-11e9-4bf1-8ef4-85c05fb28960)
 
 
-Desktop View
+### Desktop View
 ![Screenshot 2024-04-30 162934](https://github.com/IcyG1045/CM4Cam/assets/80078028/440f6ba5-4bdf-405a-9bc6-5574c16c0191)
 
