@@ -1,4 +1,4 @@
-# Here is a list of prerequisit codes that must be enetered before running camserver.py
+# Here is a list of prerequisit codes that must be entered before running camserver.py
 
 ## On the [Waveshare Website](https://www.waveshare.com/wiki/CM4-NANO-C)
 there is a a list of code needed to enable the camera.
