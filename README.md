@@ -19,7 +19,7 @@ This is based off of [allphasepi's work](https://github.com/allphasepi/Webcam/tr
 
 For the case, I had to cut off the bit that sticks out on the bottom half because it interfered with the wireless antennae. I also had to use screws to screw the two halves together because my pla print did not clip well.
 
-[#d Printed Case](https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085)
+[3d Printed Case](https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085)
 
 
 ## Pictures
