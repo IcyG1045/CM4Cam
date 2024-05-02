@@ -43,17 +43,31 @@ sudo apt update
 ### Install necessary programs with sudo
 
 ```
+sudo apt install ffmpeg
+sudo apt install python3 python3-pip
+sudo apt install libcamera-tools
+```
+
+### Descriptions
 sudo apt install ffmpeg  # Needed for video file conversion.
 sudo apt install python3 python3-pip  # Flask is used for the web server.
 sudo apt install libcamera-tools # Needed for camera control on some Raspberry Pi models.
-```
-### Install necessary python plugins
+
+## Install necessary python plugins
 
 ```
+pip3 install picamera2 
+pip3 install Flask
+pip3 install Flask-RESTful
+pip3 install Pillow
+pip3 install watchdog
+pip3 install bcrypt
+```
+
+### Descriptions
 pip3 install picamera2  # For camera interface on Raspberry Pi.
 pip3 install Flask  # Flask is used as the web framework.
 pip3 install Flask-RESTful  # Flask extension for building REST APIs.
 pip3 install Pillow  # For image manipulation capabilities.
 pip3 install watchdog  # To monitor file system events.
 pip3 install bcrypt  # Possibly for password hashing (if it appears you're managing user authentication).
-```
