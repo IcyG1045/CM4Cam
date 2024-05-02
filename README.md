@@ -1,18 +1,21 @@
-## A Flask webcam 
-that streams, records video, and takes a picture with Picamera2 using a Raspi Compute Module 4 with a Waveshare CM4-Nano-C noir camera base board.
+# A CM4-Nano-C based Flask security cam 
 
-This is based off of allphasepi's work https://github.com/allphasepi/Webcam/tree/main which is based off KarasuY's article https://github.com/raspberrypi/picamera2/issues/844.
 
-Every instance where cm4 exist in a file path will need to be changed to your pi's user name unless you set it to cm4. 
 
-This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wireless no-emmc Raspi Compute Module 4.
+Streams, records video, and takes a picture with Picamera2 using a Raspi Compute Module 4 with a Waveshare CM4-Nano-C noir camera base board.
+
+This is based off of [allphasepi's work](https://github.com/allphasepi/Webcam/tree/main) which is based off [KarasuY's article](https://github.com/raspberrypi/picamera2/issues/844).
+
+### Every instance where cm4 exist in a file path will need to be changed to your pi's user name unless you set it to cm4. 
+
+## This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wireless no-emmc Raspi Compute Module 4.
 
 
 ## 3d printed case link and creator Metatron22
 
 For the case, I had to cut off the bit that sticks out on the bottom half because it interfered with the wireless antennae. I also had to use screws to screw the two halves together because my pla print did not clip well.
 
-https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085
+[#d Printed Case](https://www.printables.com/en/model/358857-raspberry-pi-cm4-nano-base-c-case/files https://www.printables.com/@Metatron22_323085)
 
 
 ## Pictures
