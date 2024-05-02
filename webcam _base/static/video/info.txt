@@ -1,0 +1,3 @@
+H264 files will be stored here after being saved from capture where they will then automatically be converted to a MP4 file for smaller size and better browser compatibility.
+
+Thumbnails folder should generate here as well.
