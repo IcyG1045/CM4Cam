@@ -1,0 +1,1 @@
+Pictures get sent here. The thumbnails folder should also be generated and stored here.
