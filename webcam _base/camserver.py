@@ -13,6 +13,8 @@ from datetime import datetime
 from threading import Condition
 import time
 import os
+import numpy as np
+from PIL import Image, ImageChops, ImageFilter
 
 from libcamera import Transform
 from watchdog.observers import Observer
@@ -69,25 +71,58 @@ def stopRec():
     else:
         return render_template('stopRec.html', message="No video was recorded or file path is missing.")
 
+
+from PIL import Image, ImageChops
+
+from PIL import Image, ImageChops, ImageFilter
+
 class Camera:
     def __init__(self):
         self.camera = picamera2.Picamera2()
         self.camera.configure(self.camera.create_video_configuration(main={"size": (800, 600)}))
-        self.still_config = self.camera.create_still_configuration()
         self.encoder = MJPEGEncoder(10000000)
         self.streamOut = StreamingOutput()
         self.streamOut2 = FileOutput(self.streamOut)
         self.encoder.output = [self.streamOut2]
-
         self.camera.start_encoder(self.encoder)
         self.camera.start_recording(encoder, output)
+        self.previous_image = None
 
     def get_frame(self):
         self.camera.start()
         with self.streamOut.condition:
             self.streamOut.condition.wait()
-            self.frame = self.streamOut.frame
-        return self.frame
+            frame_data = self.streamOut.frame
+        image = Image.open(io.BytesIO(frame_data)).convert('L')  # Convert to grayscale to simplify the computation
+        image = image.filter(ImageFilter.GaussianBlur(radius=2))  # Apply Gaussian blur
+        if self.previous_image is not None:
+            if self.detect_motion(self.previous_image, image):
+                print("Motion Detected!")
+        self.previous_image = image
+        return frame_data
+
+    def detect_motion(self, prev_image, current_image):
+        # Calculate difference and convert to grayscale
+        diff = ImageChops.difference(prev_image, current_image)
+        # Apply threshold to ignore minor differences
+        diff = diff.point(lambda x: x > 40 and 255)  # Adjust the 20 to increase sensitivity
+        # Count pixels that are significantly different
+        count = np.sum(np.array(diff) > 0)
+        return count > 500  # Adjust 500 based on your specific sensitivity needs
+
+class StreamingOutput(io.BufferedIOBase):
+    def __init__(self):
+        self.frame = None
+        self.condition = Condition()
+
+    def write(self, buf):
+        with self.condition:
+            self.frame = buf
+            self.condition.notify_all()
+
+
+
+
 
     def VideoSnap(self):
         print("Snap")
@@ -116,6 +151,7 @@ def genFrames():
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
 
 class VideoFeed(Resource):
     def get(self):
