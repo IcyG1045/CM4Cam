@@ -71,19 +71,16 @@ def stopRec():
     else:
         return render_template('stopRec.html', message="No video was recorded or file path is missing.")
 
-
-from PIL import Image, ImageChops
-
-from PIL import Image, ImageChops, ImageFilter
-
 class Camera:
     def __init__(self):
         self.camera = picamera2.Picamera2()
         self.camera.configure(self.camera.create_video_configuration(main={"size": (800, 600)}))
+        self.still_config = self.camera.create_still_configuration()
         self.encoder = MJPEGEncoder(10000000)
         self.streamOut = StreamingOutput()
         self.streamOut2 = FileOutput(self.streamOut)
         self.encoder.output = [self.streamOut2]
+
         self.camera.start_encoder(self.encoder)
         self.camera.start_recording(encoder, output)
         self.previous_image = None
@@ -101,28 +98,6 @@ class Camera:
         self.previous_image = image
         return frame_data
 
-    def detect_motion(self, prev_image, current_image):
-        # Calculate difference and convert to grayscale
-        diff = ImageChops.difference(prev_image, current_image)
-        # Apply threshold to ignore minor differences
-        diff = diff.point(lambda x: x > 40 and 255)  # Adjust the 20 to increase sensitivity
-        # Count pixels that are significantly different
-        count = np.sum(np.array(diff) > 0)
-        return count > 500  # Adjust 500 based on your specific sensitivity needs
-
-class StreamingOutput(io.BufferedIOBase):
-    def __init__(self):
-        self.frame = None
-        self.condition = Condition()
-
-    def write(self, buf):
-        with self.condition:
-            self.frame = buf
-            self.condition.notify_all()
-
-
-
-
 
     def VideoSnap(self):
         print("Snap")
@@ -133,6 +108,17 @@ class StreamingOutput(io.BufferedIOBase):
         time.sleep(1)
         self.job = self.camera.switch_mode_and_capture_file(self.still_config, self.file_output, wait=False)
         self.metadata = self.camera.wait(self.job)
+
+
+    def detect_motion(self, prev_image, current_image):
+        # Calculate difference and convert to grayscale
+        diff = ImageChops.difference(prev_image, current_image)
+        # Apply threshold to ignore minor differences
+        diff = diff.point(lambda x: x > 40 and 255)  # Adjust the 20 to increase sensitivity
+        # Count pixels that are significantly different
+        count = np.sum(np.array(diff) > 0)
+        return count > 500  # Adjust 500 based on your specific sensitivity needs
+
 
 class StreamingOutput(io.BufferedIOBase):
     def __init__(self):
