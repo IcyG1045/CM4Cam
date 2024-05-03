@@ -18,6 +18,21 @@
             .desktop-spacing-right {
                 padding-right: 20px; /* Add spacing between columns */
             }
+            .streaming-container {
+                position: relative;
+                max-width: 80%; /* Limit max width of the streaming container */
+                margin: auto; /* Center the streaming container */
+            }
+            .logout-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: red;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 8px;
+                font-size: 18px;
+            }
         }
         @media (max-width: 991px) { /* Tablets and mobile devices */
             .mobile-settings {
@@ -32,16 +47,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 col-sm-12 desktop-padding desktop-spacing-right mobile-settings">
-                <div style="background-color: #333333; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px; border-radius: 8px; text-align: center;">
+                <div class="streaming-container" style="background-color: #333333; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px; border-radius: 8px; text-align: center; position: relative;">
+                    <a href="{{ url_for('logout') }}" class="logout-button" target="_top">Logout</a>
                     <h1 style="margin-bottom: 10px; padding-bottom: 10px;">Streaming</h1>
                     <span id="rntime" style="display: block; font-size: 18px; margin-bottom: 10px; padding-bottom: 10px;"></span>
                     <div>
                         <img src="{{'cam'}}" style="width: 100%; height: auto; border-radius: 4px;">
                     </div>
-                    <button id="StartR" type="button" title="record video file" onclick="window.open('/startRec.html', 'infstate'); return false;" style="background-color: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer;">Start</button>
-                    <button id="StopR" type="button" title="record video file" onclick="window.open('/stopRec.html', 'infstate'); return false;" style="background-color: #f44336; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer;">Stop</button>
-                    <button id="Snap" type="button" title="take jpg file" onclick="window.open('/snap.html', 'infstate'); return false;" style="background-color: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer;">Snap</button>
-                    <button onclick="window.location.href='/files'" style="background-color: #009688; color: white; padding: 12px 24px; border-radius: 5px; margin-top: 10px; cursor: pointer; width: 100%;">Files</button>
+                    <button id="StartR" type="button" title="record video file" onclick="window.open('/startRec.html', 'infstate'); return false;" style="background-color: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer; font-size: 18px;">Start</button>
+                    <button id="StopR" type="button" title="record video file" onclick="window.open('/stopRec.html', 'infstate'); return false;" style="background-color: #f44336; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer; font-size: 18px;">Stop</button>
+                    <button id="Snap" type="button" title="take jpg file" onclick="window.open('/snap.html', 'infstate'); return false;" style="background-color: #4CAF50; color: white; padding: 15px 20px; border-radius: 5px; margin-top: 10px; width: 100%; cursor: pointer; font-size: 18px;">Snap</button>
+                    <button onclick="window.location.href='/files'" style="background-color: #009688; color: white; padding: 12px 24px; border-radius: 5px; margin-top: 10px; cursor: pointer; width: 100%; font-size: 18px;">Files</button>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12 desktop-padding mobile-settings">
