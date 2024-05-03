@@ -224,6 +224,24 @@ def api_files():
 
         return jsonify({'error': str(e)})
 
+
+
+@app.route('/delete-file/<filename>', methods=['DELETE'])
+def delete_file(filename):
+    # Determine if it's a video or picture based on the extension or another method
+    if filename.endswith('.mp4') or filename.endswith('.mkv'):
+        directory = '/home/cm4/cam/static/video'
+    else:
+        directory = '/home/cm4/cam/static/pictures'
+
+    file_path = os.path.join(directory, filename)
+    try:
+        os.remove(file_path)
+        return '', 204  # Successful deletion
+    except Exception as e:
+        return str(e), 500  # Internal server error
+
+
 @app.route('/files')
 
 def files():
@@ -282,78 +300,6 @@ def require_login():
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect(url_for('login'))
 
-
-
-def create_image_thumbnail(image_path, thumbnail_path, size=(128, 128)):
-
-    try:
-
-        with Image.open(image_path) as img:
-
-            img.thumbnail(size)
-
-            img.save(thumbnail_path)
-
-            print(f"Thumbnail successfully created for {image_path}")
-
-    except Exception as e:
-
-        print(f"Error creating thumbnail for {image_path}: {e}")
-
-
-
-class ThumbnailHandler(FileSystemEventHandler):
-
-    def on_created(self, event):
-
-        if not event.is_directory and event.src_path.endswith(('.jpg', '.jpeg', '.png')):
-
-            filename = os.path.basename(event.src_path)
-
-            thumbnail_path = os.path.join(THUMBNAIL_DIRECTORY, filename)
-
-            print(f"Detected new image: {event.src_path}")  # Debug print
-
-            create_image_thumbnail(event.src_path, thumbnail_path)
-
-
-IMAGE_DIRECTORY = '/home/cm4/cam/static/pictures/'
-
-THUMBNAIL_DIRECTORY = os.path.join(IMAGE_DIRECTORY, 'thumbnails')
-
-
-
-def debug_directory_contents(directory):
-
-    # Print out all files in the directory for debugging purposes
-
-    print("Debugging directory contents:")
-
-    for entry in os.scandir(directory):
-
-        if entry.is_file():
-
-            print(f"File: {entry.name}, Size: {entry.stat().st_size} bytes")
-
-
-debug_directory_contents(THUMBNAIL_DIRECTORY)
-
-# Ensure the thumbnail directory exists
-
-os.makedirs(THUMBNAIL_DIRECTORY, exist_ok=True)
-
-
-# Setup the watchdog observer
-
-observer = Observer()
-
-observer.schedule(ThumbnailHandler(), IMAGE_DIRECTORY, recursive=False)
-
-observer.start()
-
-# Ensure that the observer is stopped when the app exits
-
-atexit.register(observer.stop)
 
 
 if __name__ == '__main__':
