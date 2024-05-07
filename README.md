@@ -2,7 +2,7 @@
 
 Streams, records video, and takes a picture with Picamera2 using a Raspi Compute Module 4 with a Waveshare CM4-Nano-C noir camera base board.
 
-
+# RUN install_libraries.py to install everything. If you do that then you will only need to enable your camera in /boot.config.txt
 
 This is based off of [allphasepi's work](https://github.com/allphasepi/Webcam/tree/main) which is based off [KarasuY's article](https://github.com/raspberrypi/picamera2/issues/844).
 
