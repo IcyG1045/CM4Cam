@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Files</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .content-container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .file-container {
+            display: inline-block;
+            margin: 20px;
+            vertical-align: top;
+            text-align: center;
+        }
+        .file-container img, .file-container video {
+            width: 320px;  /* Set the width of images and videos to be the same */
+            height: auto; /* Set a fixed height if you want uniformity */
+            object-fit: contain;
+        }
+        .file-name {
+            color: #fff;
+            margin-top: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .modal.show {
+            opacity: 1;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: #333;
+            margin: 5% auto;  /* Center the modal vertically and horizontally */
+            padding: 20px;    /* Padding inside the modal */
+            border: 1px solid #888;
+            width: 90%;       /* Increase the width as per your requirement */
+            max-width: 1200px; /* Set a maximum width limit */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            transform: translateY(-50px);
+            transition: transform 0.4s ease-out;
+        }
+        .modal-content.show {
+            transform: translateY(0px);
+        }
+        .modal-content img, .modal-content video {
+            max-width: 100%;  /* Ensure images and videos do not exceed the width of the modal */
+            max-height: 80vh; /* Limit the height to 80% of the viewport height */
+            height: auto;     /* Maintains the aspect ratio of the content */
+            display: block;   /* Ensures that the content is properly blocked out */
+            margin: 0 auto;   /* Centers the content horizontally */
+        }
+        .close {
+            color: red;
+            float: right;
+            font-size: 56px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: darkred;
+            text-decoration: none;
+        }
+        .button-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .download-link, .delete-button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .delete-button {
+            background-color: #f44336;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="/home" class="btn btn-primary" style="margin-bottom: 20px;">Home</a>
+                <div class="content-container">
+                    <h1>Pictures</h1>
+                    <div id="images"></div>
+                </div>
+                <div class="content-container">
+                    <h1>Videos</h1>
+                    <div id="videos"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        function fetchFiles() {
+            fetch('/api/files')
+            .then(response => response.json())
+            .then(data => {
+                const imagesContainer = document.getElementById('images');
+                const videosContainer = document.getElementById('videos');
+
+                imagesContainer.innerHTML = '';
+                videosContainer.innerHTML = '';
+
+                data.images.forEach(image => {
+                    const container = document.createElement('div');
+                    container.className = 'file-container';
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = `/static/pictures/${image}`;
+                    imgElement.alt = image;
+                    imgElement.className = 'media-file'; // Class for consistent styling
+                    imgElement.onclick = () => showModal(`/static/pictures/${image}`, 'image', image);
+
+                    const nameElement = document.createElement('div');
+                    nameElement.textContent = image;
+                    nameElement.className = 'file-name';
+
+                    container.appendChild(imgElement);
+                    container.appendChild(nameElement);
+                    imagesContainer.appendChild(container);
+                });
+
+                data.videos.forEach(video => {
+                    const container = document.createElement('div');
+                    container.className = 'file-container';
+
+                    const videoElement = document.createElement('video');
+                    videoElement.className = 'media-file'; // Class for consistent styling
+                    videoElement.controls = true;
+                    videoElement.onclick = () => showModal(`/static/video/${video}`, 'video', video);
+
+                    const sourceElement = document.createElement('source');
+                    sourceElement.src = `/static/video/${video}`;
+                    sourceElement.type = 'video/mp4';
+                    videoElement.appendChild(sourceElement);
+
+                    const nameElement = document.createElement('div');
+                    nameElement.textContent = video;
+                    nameElement.className = 'file-name';
+
+                    container.appendChild(videoElement);
+                    container.appendChild(nameElement);
+                    videosContainer.appendChild(container);
+                });
+            })
+            .catch(error => console.error('Error loading files:', error));
+        }
+
+        function showModal(fileUrl, type, fileName) {
+            const modal = document.getElementById('myModal');
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = ''; // Clear previous content
+
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = fileUrl;
+                img.className = 'media-file'; // Use class for consistent styling
+
+                modalContent.appendChild(img);
+            } else if (type === 'video') {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.style.maxWidth = '100%';  // Ensure it matches the modal-content styles
+                video.style.maxHeight = '80vh'; // Ensure it matches the modal-content styles
+                video.autoplay = true;
+
+                const source = document.createElement('source');
+                source.src = fileUrl;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+
+                modalContent.appendChild(video);
+            }
+
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'button-container';
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = fileUrl;
+            downloadLink.download = fileName;
+            downloadLink.textContent = 'Download';
+            downloadLink.className = 'download-link';
+            buttonsContainer.appendChild(downloadLink);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = () => {
+                if (confirm('Are you sure you want to delete this file?')) {
+                    deleteFile(fileName); // Already includes confirmation
+                    closeModal();
+                }
+            };
+            buttonsContainer.appendChild(deleteButton);
+
+            modalContent.appendChild(buttonsContainer);
+            modal.classList.add('show');
+            modalContent.classList.add('show');
+        }
+
+        function deleteFile(filename) {
+            fetch(`/delete-file/${filename}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert('File deleted successfully');
+                    fetchFiles(); // Refresh the list of files
+                } else {
+                    alert('Failed to delete the file');
+                }
+            })
+            .catch(error => console.error('Error deleting file:', error));
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.classList.remove('show');
+            const modalContent = document.getElementById('modal-content');
+            modalContent.classList.remove('show');
+            setTimeout(() => modal.style.display = "none", 400); // Ensure transition is visible
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchFiles);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        @media (min-width: 992px) { /* Desktop and larger devices */
+            .desktop-padding {
+                padding-top: 20px; /* Add padding on top for spacing */
+            }
+            .desktop-spacing-right {
+                padding-right: 20px; /* Add spacing between columns */
+            }
+        }
+        @media (max-width: 991px) { /* Tablets and mobile devices */
+            .mobile-settings {
+                position: static;
+                padding-left: 15px; /* Add left padding on mobile */
+                padding-right: 15px; /* Add right padding on mobile */
+            }
+        }
+        body {
+            background-color: #121212;
+            color: white;
+        }
+        form {
+            background-color: #333333;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        input[type="text"], input[type="password"], input[type="submit"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center; margin: 20px;">Login</h2>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form method="post">
+                    Username: <input type="text" name="username"><br>
+                    Password: <input type="password" name="password"><br>
+                    <input type="submit" value="Login">
+                    {% if error %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

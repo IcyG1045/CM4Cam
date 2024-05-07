@@ -1,0 +1,84 @@
+/* mystyles.css - Custom styles for Pi Zero2 2 interface */
+
+/* Dark theme and font setup */
+body {
+    background-color: #121212; /* Dark background for all devices */
+    color: #ffffff; /* Light text color for contrast */
+    font-family: 'Arial', sans-serif; /* Consistent font throughout the page */
+}
+
+
+/* Main container for camera stream */
+.camContainer {
+    background-color: #333333; /* Darker background for camera container */
+    padding: 20px; /* Adequate padding for spacing */
+    border-radius: 8px; /* Rounded corners for modern appearance */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* More prominent shadow for depth */
+    margin: auto; /* Centering the container on all screens */
+    max-width: 100%; /* Full width on smaller devices, overwritten below for larger screens */
+}
+
+/* Container and settings for inner camera image */
+.innerCam img {
+    width: 100%; /* Full width on smaller devices, overwritten below for larger screens */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners for images */
+    margin: auto; /* Centering image within its container */
+    transform: rotate(90deg); /* Rotates the image 90 degrees clockwise */
+}
+
+}
+
+/* Styling for buttons */
+.btn_source, .btn_sourced {
+    background-color: #4CAF50; /* Green background for actionable buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px; /* Rounded corners for buttons */
+    margin-top: 10px; /* Margin above buttons */
+    cursor: pointer; /* Cursor indicates clickable */
+    width: 100%; /* Full width buttons on smaller screens */
+}
+
+/* Specific styles for 'stop' buttons */
+.btn_sourced {
+    background-color: #f44336; /* Red color for 'stop' actions */
+}
+
+/* Hover effects for all buttons */
+.btn_source:hover, .btn_sourced:hover {
+    opacity: 0.8; /* Hover effect for better user interaction */
+}
+
+/* Responsive adjustments for desktop screens */
+@media (min-width: 1024px) {
+    .innerCam img {
+        max-width: 75%; /* Reducing the size to 75% of its container for better desktop view */
+    }
+
+    .camContainer {
+        max-width: 800px; /* Sets a max width for the camera container on larger screens */
+    }
+}
+
+/* Responsive settings for devices up to 1024px wide */
+@media (max-width: 1024px) {
+    /* Ensures image takes full width of its container on smaller devices */
+    .innerCam img {
+        width: 100%;
+    }
+}
+
+/* Additional responsive handling for smaller devices */
+@media (max-width: 768px) {
+    .camContainer, .infoContainer {
+        padding: 10px;
+    }
+
+    .btn_source, .btn_sourced {
+        padding: 12px 24px; /* Larger button padding on small screens */
+        margin-top: 5px; /* Reduced margin for compact appearance */
+    }
+}
