@@ -15,7 +15,7 @@ def main():
     
     run_command('sudo apt-get install git')
     run_command('cd /home') 
-
+    run_command('git clone https://github.com/IcyG1045/CM4Cam.git)
 
     # Download and extract CM4_dt_blob.7z
     run_command('wget https://files.waveshare.com/upload/4/41/CM4_dt_blob.7z')
