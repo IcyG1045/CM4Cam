@@ -16,7 +16,7 @@ Then,
 
 ```
 cd /CM4Cam/camserver
-sudo install_libraries.py
+sudo python3 install_libraries.py
 ```
 
 It will install all required libraries as well as set correct permissions to run the CM4Cam. After completing, ### THE PI WILL REBOOT
