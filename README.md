@@ -3,51 +3,6 @@
 Streams, records video, and takes a picture with Picamera2 using a Raspi Compute Module 4 with a Waveshare CM4-Nano-C noir camera base board.
 
 
-
-# To install and run, do the following
-
-```
-sudo apt-get install git
-cd /home 
-git clone https://github.com/IcyG1045/CM4Cam.git
-```
-
-Then,
-
-```
-cd /CM4Cam/camserver
-sudo python3 install_libraries.py
-```
-
-It will install all required libraries as well as set correct permissions to run the CM4Cam. After completing, ### THE PI WILL REBOOT
-
-Then do
-
-```
-sudo nano /boot/config.txt
-```
-add your required tags to enable your camera, then do
-
-```
-cd /home/CM4Cam/camserver
-```
-and run
-
-```
-sudo python3 camserver.py
-```
-
-This is based off of [allphasepi's work](https://github.com/allphasepi/Webcam/tree/main) which is based off [KarasuY's article](https://github.com/raspberrypi/picamera2/issues/844).
-
-
-
-## You will need to set your credentials under the *Globals* section of camserver.py
-
-
-```
-sudo nano camserver.py
-```
-
 ## This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wireless no-emmc Raspi Compute Module 4.
 
 
