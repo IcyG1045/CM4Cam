@@ -3,7 +3,7 @@ I suggest enabling ssh and doing this remotely.
 ```
 sudo apt-get install git
 cd /home 
-git clone https://github.com/IcyG1045/CM4Cam.git
+sudo git clone https://github.com/IcyG1045/CM4Cam.git
 ```
 
 Then,
