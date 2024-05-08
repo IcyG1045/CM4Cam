@@ -1,5 +1,5 @@
 # To install and run, do the following
-
+I suggest enabling ssh and doing this remotely.
 ```
 sudo apt-get install git
 cd /home 
