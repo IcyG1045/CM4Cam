@@ -41,9 +41,12 @@ This is based off of [allphasepi's work](https://github.com/allphasepi/Webcam/tr
 
 
 
-## Every instance where cm4 exist in a file path will need to be changed to your pi's user name unless you set it to cm4. 
+## You will need to set your credentials under the *Globals* section of camserver.py
 
 
+```
+sudo nano camserver.py
+```
 
 ## This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wireless no-emmc Raspi Compute Module 4.
 
