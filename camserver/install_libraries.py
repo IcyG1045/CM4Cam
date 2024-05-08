@@ -40,10 +40,10 @@ def main():
     run_command('pip3 install bcrypt')
 
     # Set permissions for specific directories
-    run_command('sudo chmod u+rwx /home/cm4/cam/static/pictures/')
-    run_command('sudo chmod u+rwx /home/cm4/cam/static/video/')
-    run_command('sudo chmod -R 777 /home/cm4/cam/static/pictures/')
-    run_command('sudo chmod -R 777 /home/cm4/cam/static/video/')
+    run_command('sudo chmod u+rwx /home/CM4Cam/camserver/static/pictures/')
+    run_command('sudo chmod u+rwx /home/CM4Cam/camserver/static/video/')
+    run_command('sudo chmod -R 777 /home/CM4Cam/camserver/static/pictures/')
+    run_command('sudo chmod -R 777 /home/CM4Cam/camserver/static/video/')
 
     # Reboot
     run_command('sudo reboot')
