@@ -9,7 +9,7 @@ sudo git clone https://github.com/IcyG1045/CM4Cam.git
 Then,
 
 ```
-cd /CM4Cam/camserver
+cd CM4Cam/camserver/
 sudo python3 install_libraries.py
 ```
 
