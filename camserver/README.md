@@ -28,11 +28,13 @@ Add your required tags to enable your camera. The CM4-Nano-C requires
 camera_auto_detect=0
 ```
 
-Place this under [all]
+### Place this under [all]
 ```
 dtoverlay=imx219,cam0
 ```
-
+```
+sudo reboot
+```
 ```
 cd /home/CM4Cam/camserver
 ```
