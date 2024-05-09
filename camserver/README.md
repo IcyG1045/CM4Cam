@@ -32,6 +32,7 @@ camera_auto_detect=0
 ```
 dtoverlay=imx219,cam0
 ```
+Then do
 ```
 sudo reboot
 ```
