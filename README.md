@@ -3,7 +3,11 @@
 Streams, records video, and takes a picture with Picamera2 using a Raspi Compute Module 4 with a Waveshare CM4-Nano-C noir camera base board.
 
 
-## This has only been tested on RaspberryPi OS legacy Bullseye 32bit using a 4gb wireless no-emmc Raspi Compute Module 4.
+## This has only been tested on RaspberryPi OS legacy Bullseye using a 4gb wireless no-emmc Raspi Compute Module 4. 
+
+## **All versions of RaspberryPi OS legacy Bullseye are currently working. **
+
+## It should work on any model Pi Running RaspberryPi OS legacy Bullseye with a Picamera2 compatible camera. 
 
 
 ## 3d printed case link and creator [Metatron22](https://www.printables.com/@Metatron22_323085)
