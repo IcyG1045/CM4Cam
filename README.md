@@ -5,7 +5,7 @@ Streams, records video, and takes a picture with Picamera2 using a Raspi Compute
 
 ## This has only been tested on RaspberryPi OS legacy Bullseye using a 4gb wireless no-emmc Raspi Compute Module 4. 
 
-## **All versions of RaspberryPi OS legacy Bullseye are currently working. **
+## All versions of RaspberryPi OS legacy Bullseye are currently working.
 
 ## It should work on any model Pi Running RaspberryPi OS legacy Bullseye with a Picamera2 compatible camera. 
 
