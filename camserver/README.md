@@ -22,7 +22,7 @@ Then do
 ```
 sudo nano /boot/config.txt
 ```
-Add your required tags to enable your camera. The CM4-Nano-C requires
+Add your required tags to enable your camera. The CM4-Nano-C requires what's below. If you only need to enable camera autodetect, then disregard this step. If you need to add other code instead of what's required for the CM4-Nano-C, then replace your code where the CM4-Nano-C code should go. 
 
 ```
 camera_auto_detect=0
@@ -36,6 +36,15 @@ Then do
 ```
 sudo reboot
 ```
+
+# To test whether or not your camera is detected enter this command. if your camera pops up then everything is good. if not thn something is wrong.
+
+```
+libcamera-hello --list-cameras
+```
+
+Then do
+
 ```
 cd /home/CM4Cam/camserver
 ```
